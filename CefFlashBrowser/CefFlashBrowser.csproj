@@ -297,6 +297,7 @@
     <Compile Include="Utils\Converters\UrlGetFileName.cs" />
     <Compile Include="Utils\Converters\VisiableIfNotZero.cs" />
     <Compile Include="Utils\Converters\VisiableIfStrNotEmpty.cs" />
+    <Compile Include="Utils\Handlers\AdBlockerRequestHandler.cs" />
     <Compile Include="Utils\Handlers\ContextMenuHandler.cs" />
     <Compile Include="Utils\Handlers\DisableDragHandler.cs" />
     <Compile Include="Utils\Handlers\IEDownloadHandler.cs" />

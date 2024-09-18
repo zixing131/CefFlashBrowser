@@ -83,6 +83,7 @@ namespace CefFlashBrowser.Views
             public BrowserDisplayHandler(BrowserWindow window)
             {
                 this.window = window;
+                
             }
 
             public override void OnFullscreenModeChange(IWebBrowser chromiumWebBrowser, IBrowser browser, bool fullscreen)
@@ -147,6 +148,25 @@ namespace CefFlashBrowser.Views
             browser.LifeSpanHandler = new BrowserLifeSpanHandler(this);
             browser.DisplayHandler = new BrowserDisplayHandler(this);
             browser.MenuHandler = new BrowserMenuHandler(this);
+            browser.RequestHandler = new Utils.Handlers.AdBlockerRequestHandler();
+            browser.FrameLoadEnd += OnFrameLoadEnd;
+        }
+
+        private void OnFrameLoadEnd(object sender, FrameLoadEndEventArgs e)
+        {
+            if (e.Frame.IsMain)
+            {
+                // 注入JavaScript来隐藏特定的元素
+                string script = @"
+                    (function() {
+                        var ads = document.querySelectorAll('.ad-class , #ad-id , #Anti_open , .cmMask , #ad1 , #ad2 , .fixed_ad');
+                        ads.forEach(function(ad) {
+                            ad.style.display = 'none';
+                        }); 
+                    })();";
+
+                e.Frame.ExecuteJavaScriptAsync(script);
+            }
         }
 
         private static void OnFullScreenChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
